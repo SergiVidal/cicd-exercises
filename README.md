@@ -2,7 +2,7 @@
 
 Para levantar Jenkins se debe de utilizar la siguiente imagen: https://hub.docker.com/r/jenkins/jenkins, para ello se ha creado un DockerFile, este se encuentra en: /jenkins/Dockerfile.
 
-A continuación, se debe de hacer el build de la imagen y la creación del contenedor. La primera vez que este sea levantado, será necesario realizar una configuraración inicial en la cual solicitará la password por defecto que se localiza en: /var/jenkins_home/secrets/initialAdminPassword, una vez introducida, preguntará que plugins se desean instalar (con los sugeridos hay suficiente).
+A continuación, se debe de hacer el build de la imagen y la creación del contenedor. La primera vez que este sea levantado, será necesario realizar una configuraración inicial en la cual solicitará la contraseña por defecto que se localiza en: /var/jenkins_home/secrets/initialAdminPassword, una vez introducida, preguntará que plugins se desean instalar (con los sugeridos hay suficiente).
 
 ```console 
 docker build -t jenkins-image .
@@ -13,11 +13,11 @@ cat /var/jenkins_home/secrets/initialAdminPassword
 ```
 http://localhost:8080/
 
-Una vez terminada la configuración, se creará una Nueva Tarea, esta será del tipo Pipeline. Durante la configuración, se solicitará la declaración o la vinculación del Jenkinsfile, en mi caso lo he vinculado mediante la URL de mi repositorio de Github, este se encuentra en la raiz: https://github.com/SergiVidal/cicd-exercises. 
+Una vez terminada la configuración, se creará una Nueva Tarea, esta será del tipo Pipeline. Durante la configuración, se solicitará la declaración o la vinculación del Jenkinsfile, en mi caso lo he vinculado mediante la URL de mi repositorio de Github, este se encuentra en la raíz: https://github.com/SergiVidal/cicd-exercises. 
 
 ![Pipeline Config](./resources/img/pipeline_config.png)
 
-A continuación, una vez creada correctamente, se ejecutará la Pipeline, y si todo ha salido satisfactoriamente, aparecerá una imagen similar a la siguiente: 
+A continuación, una vez creada correctamente, se ejecutará el Pipeline, y si todo ha salido satisfactoriamente, aparecerá una imagen similar a la siguiente: 
 
 ![Pipeline Success](./resources/img/pipeline_success.png)
 
@@ -27,20 +27,24 @@ A continuación, una vez creada correctamente, se ejecutará la Pipeline, y si t
 
 ## 1. Build
 
-La primera fase de la Pipeline consiste en la compilación de la aplicación en Golang. 
+La primera fase del Pipeline consiste en la compilación de la aplicación en Golang. 
 
 Esta aplicación dispone de una Rest API la cual expone un servicio que al realizar una petición HTTP al endpoint /demo (GET) muestra por pantalla el mensaje: "Hello World!"
 
 * Se ha utilizado el framework Gin (https://github.com/gin-gonic/gin), este permite levantar un servidor en Golang de manera muy sencilla y eficiente.
+
+* Se ha utilizado la librería HTTP (https://pkg.go.dev/net/http) para acceder a las constantes que corresponden a los códigos de respuesta de las peticiones.
 
 
 ## 2. Test
 
 La siguiente fase es la encargada de ejecutar los test unitarios y de esta forma poder comprobar el correcto funcionamiento. 
 
-* Se ha utilizado la librería interna Testing (https://pkg.go.dev/testing), la cuál permite realizar diversos test unitarios. En este caso se ha realizado un único test el cual realiza una petición HTTP al endpoint /demo (GET) y comprueba el codigo de la respuesta.
+* Se ha utilizado la librería interna Testing (https://pkg.go.dev/testing), la cual permite realizar diversos test unitarios. En este caso se ha realizado un único test el cual realiza una petición HTTP al endpoint /demo (GET) y comprueba el código de la respuesta.
 
-* Se ha utilizado la librería Testify (https://github.com/stretchr/testify), la cuál ofrece diversas herramientas necesarias durante la realización de tests y encaja a la perfección con la propia librería Testing.
+* Se ha utilizado la librería Testify (https://github.com/stretchr/testify), la cual ofrece diversas herramientas necesarias durante la realización de tests y encaja a la perfección con la propia librería Testing.
+
+* Se ha utilizado la librería HTTP (https://pkg.go.dev/net/http) para acceder a las constantes que corresponden a los códigos de respuesta de las peticiones.
 
 ## 3. Docker
 
